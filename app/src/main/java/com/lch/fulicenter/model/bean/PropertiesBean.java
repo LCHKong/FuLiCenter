@@ -1,23 +1,9 @@
 package com.lch.fulicenter.model.bean;
 
+import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
 
-/**
- * Created by LCH on 2017/1/9.
- */
-
-public class PropertiesBean {
-    /**
-     * id : 9522
-     * goodsId : 0
-     * colorId : 4
-     * colorName : 绿色
-     * colorCode : #59d85c
-     * colorImg : 201309/1380064997570506166.jpg
-     * colorUrl : 1
-     * albums : [{"pid":7672,"imgId":28283,"imgUrl":"201509/goods_img/7672_P_1442389445199.jpg","thumbUrl":"no_picture.gif"}]
-     */
+public class PropertiesBean implements Serializable {
 
     private int id;
     private int goodsId;

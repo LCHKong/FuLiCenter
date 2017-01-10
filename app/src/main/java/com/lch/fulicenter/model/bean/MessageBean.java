@@ -1,21 +1,14 @@
 package com.lch.fulicenter.model.bean;
 
-/**
- * Created by LCH on 2017/1/9.
- */
-
 public class MessageBean {
 
     /**
      * success : true
-     * msg : 收藏成功
+     * msg : 添加收藏成功
      */
 
     private boolean success;
     private String msg;
-
-    public MessageBean() {
-    }
 
     public boolean isSuccess() {
         return success;

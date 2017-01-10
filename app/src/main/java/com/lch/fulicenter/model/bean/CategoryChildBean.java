@@ -1,18 +1,14 @@
 package com.lch.fulicenter.model.bean;
 
-/**
- * Created by LCH on 2017/1/9.
- */
+import java.io.Serializable;
 
-public class CategoryChildBean {
-    public CategoryChildBean() {
-    }
+public class CategoryChildBean implements Serializable {
 
     /**
-     * id : 262
-     * parentId : 261
-     * name : 防晒
-     * imageUrl : cat_image/261_1.png
+     * id : 348
+     * parentId : 344
+     * name : 败姐推荐
+     * imageUrl : cat_image/256_4.png
      */
 
     private int id;

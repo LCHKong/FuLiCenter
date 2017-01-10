@@ -1,10 +1,9 @@
 package com.lch.fulicenter.model.bean;
 
-/**
- * Created by LCH on 2017/1/9.
- */
+import java.io.Serializable;
 
-public class ColorBean {
+public class ColorBean implements Serializable {
+
     /**
      * catId : 262
      * colorId : 1
@@ -70,4 +69,3 @@ public class ColorBean {
                 '}';
     }
 }
-

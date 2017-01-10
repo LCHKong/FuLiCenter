@@ -1,24 +1,13 @@
 package com.lch.fulicenter.model.bean;
 
-/**
- * Created by LCH on 2017/1/9.
- */
+import java.io.Serializable;
 
-public class AlbumsBean {
-    /**
-     * pid : 7672
-     * imgId : 28283
-     * imgUrl : 201509/goods_img/7672_P_1442389445199.jpg
-     * thumbUrl : no_picture.gif
-     */
+public class AlbumsBean implements Serializable {
 
     private int pid;
     private int imgId;
     private String imgUrl;
     private String thumbUrl;
-
-    public AlbumsBean() {
-    }
 
     public int getPid() {
         return pid;
