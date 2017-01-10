@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.lch.fulicenter.MainActivity;
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.view.MFGT.MFGT;
 
@@ -24,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 MFGT.startActivity(SplashActivity.this, MainActivity.class);
+                MFGT.finish(SplashActivity.this);
             }
         }, 2000);
     }

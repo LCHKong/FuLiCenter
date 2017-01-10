@@ -1,7 +1,9 @@
-package com.lch.fulicenter;
+package com.lch.fulicenter.controller.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.lch.fulicenter.R;
 
 public class MainActivity extends AppCompatActivity {
 
