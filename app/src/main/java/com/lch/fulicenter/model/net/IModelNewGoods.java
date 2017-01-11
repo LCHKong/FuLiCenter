@@ -10,4 +10,5 @@ import com.lch.fulicenter.model.bean.NewGoodsBean;
 
 public interface IModelNewGoods {
     void downData(Context context, int catId,int pageId, OnCompleteListener<NewGoodsBean[]> listener);
+
 }
