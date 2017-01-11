@@ -4,25 +4,22 @@ package com.lch.fulicenter.controller.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.I;
-import com.lch.fulicenter.controller.adapter.GoodsAdapter;
-import com.lch.fulicenter.model.bean.NewGoodsBean;
-import com.lch.fulicenter.model.net.IModelNewGoods;
-import com.lch.fulicenter.model.net.ModelNewGoods;
+import com.lch.fulicenter.controller.adapter.BoutiqueAdapter;
+import com.lch.fulicenter.model.bean.BoutiqueBean;
+import com.lch.fulicenter.model.net.IModelBoutique;
+import com.lch.fulicenter.model.net.ModeBoutique;
 import com.lch.fulicenter.model.net.OnCompleteListener;
 import com.lch.fulicenter.model.utils.ConvertUtils;
 import com.lch.fulicenter.model.utils.SpaceItemDecoration;
-import com.lch.fulicenter.view.MFGT.MFGT;
 
 import java.util.ArrayList;
 
@@ -32,7 +29,8 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewGoodsFragment extends Fragment {
+public class BoutiqueFragment extends Fragment {
+
 
     @BindView(R.id.tvRefresh)
     TextView mTvRefresh;
@@ -41,24 +39,24 @@ public class NewGoodsFragment extends Fragment {
     @BindView(R.id.srl)
     SwipeRefreshLayout mSrl;
 
-    public NewGoodsFragment() {
+    public BoutiqueFragment() {
         // Required empty public constructor
     }
 
-    GridLayoutManager gm;
-    GoodsAdapter mAdapter;
-    ArrayList<NewGoodsBean> mList = new ArrayList<>();
-    IModelNewGoods model;
+    LinearLayoutManager lm;
+    BoutiqueAdapter mAdapter;
+    ArrayList<BoutiqueBean> mList = new ArrayList<>();
+    IModelBoutique model;
     int pageId = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_new_goods, container, false);
+        View view = inflater.inflate(R.layout.fragment_boutique, container, false);
         ButterKnife.bind(this, view);
         initView();
-        model = new ModelNewGoods();
+        model = new ModeBoutique();
         initData();
         setListener();
         return view;
@@ -74,9 +72,7 @@ public class NewGoodsFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                final int lastPosition = gm.findLastVisibleItemPosition();
-
-
+                int lastPosition = lm.findLastVisibleItemPosition();
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && mAdapter.isMore()
                         && lastPosition == mAdapter.getItemCount() - 1) {
@@ -89,7 +85,7 @@ public class NewGoodsFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 // 让第一页不刷新
-                int fist = gm.findFirstCompletelyVisibleItemPosition();
+                int fist = lm.findFirstCompletelyVisibleItemPosition();
                 mSrl.setEnabled(fist == 0);
             }
         });
@@ -113,14 +109,14 @@ public class NewGoodsFragment extends Fragment {
     }
 
     private void downloadList(final int action, int PageId) {
-        model.downData(getContext(), I.CAT_ID, pageId, new OnCompleteListener<NewGoodsBean[]>() {
+        model.downData(getContext(), new OnCompleteListener<BoutiqueBean[]>() {
             @Override
-            public void onSuccess(NewGoodsBean[] result) {
+            public void onSuccess(BoutiqueBean[] result) {
                 mSrl.setRefreshing(false);
                 mTvRefresh.setVisibility(View.GONE);
                 mAdapter.setMore(true);
                 if (result != null && result.length > 0) {
-                    ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
+                    ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mAdapter.initData(list);
                     } else {
@@ -148,23 +144,11 @@ public class NewGoodsFragment extends Fragment {
                 getResources().getColor(R.color.google_yellow),
                 getResources().getColor(R.color.google_blue)
         );
-        gm = new GridLayoutManager(getContext(), I.COLUM_NUM);
-
-        // 使页脚居中
-        gm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (position == mAdapter.getItemCount() - 1) {
-                    return 2;
-                }
-                return 1;
-            }
-        });
-
+        lm = new LinearLayoutManager(getContext());
         mRv.addItemDecoration(new SpaceItemDecoration(10));
-        mRv.setLayoutManager(gm);
+        mRv.setLayoutManager(lm);
         mRv.setHasFixedSize(true);
-        mAdapter = new GoodsAdapter(getContext(), mList);
+        mAdapter = new BoutiqueAdapter(getContext(), mList);
         mRv.setAdapter(mAdapter);
     }
 }
