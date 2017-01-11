@@ -5,17 +5,34 @@
     android:orientation="vertical"
     tools:context="com.lch.fulicenter.controller.fragment.NewGoodsFragment">
 
-    <GridLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:orientation="horizontal"
-        android:rowCount="2">
+        android:layout_height="match_parent"
+        android:background="@color/list_background">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/nopic" />
-    </GridLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="now_refresh"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

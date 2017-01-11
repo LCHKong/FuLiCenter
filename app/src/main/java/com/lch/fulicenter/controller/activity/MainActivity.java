@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.RadioButton;
 
 import com.lch.fulicenter.R;
+import com.lch.fulicenter.controller.fragment.NewGoodsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         rbs[2] = layoutCategory;
         rbs[3] = layoutCart;
         rbs[4] = layoutPersonalCenter;
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, new NewGoodsFragment())
+                .commit();
     }
 
     public void onCheckedChange(View view) {
