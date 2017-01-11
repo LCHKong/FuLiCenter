@@ -1,23 +1,26 @@
 package com.lch.fulicenter.controller.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.I;
+import com.lch.fulicenter.controller.activity.GoodsDetailActivity;
 import com.lch.fulicenter.model.bean.NewGoodsBean;
 import com.lch.fulicenter.model.utils.ImageLoader;
 import com.lch.fulicenter.view.MFGT.FooterViewHolder;
-
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by LCH on 2017/1/11.
@@ -28,6 +31,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     ArrayList<NewGoodsBean> mList;
     String footer;
     boolean isMore;
+
 
     public String getFooter() {
         return isMore ? "加载更多数据 " : "没有更多数据";
@@ -75,8 +79,11 @@ public class GoodsAdapter extends RecyclerView.Adapter {
 
         GoodsViewHolder vh = (GoodsViewHolder) ParentHolder;
         ImageLoader.downloadImg(mContext, vh.mIvGoodsThumb, mList.get(position).getGoodsThumb());
+
+        NewGoodsBean goods = mList.get(position);
         vh.mTvGoodsName.setText(mList.get(position).getGoodsName());
         vh.mTvGoodsPrice.setText(mList.get(position).getCurrencyPrice());
+        vh.tvLayoutGoods.setTag(goods.getGoodsId());
 
     }
 
@@ -106,18 +113,30 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    static class GoodsViewHolder extends RecyclerView.ViewHolder {
+    class GoodsViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ivGoodsThume)
         ImageView mIvGoodsThumb;
         @BindView(R.id.tvGoodsName)
         TextView mTvGoodsName;
         @BindView(R.id.tvGoodsPrice)
         TextView mTvGoodsPrice;
+        @BindView(R.id.layout_goods)
+        LinearLayout tvLayoutGoods;
 
         GoodsViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
+
+        @OnClick(R.id.layout_goods)
+        public void onGoodsItemClick() {
+            int goodsId = (int) tvLayoutGoods.getTag();
+            mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class)
+                    .putExtra(I.GoodsDetails.KEY_GOODS_ID, goodsId));
+
+
+        }
     }
+
 
 }
