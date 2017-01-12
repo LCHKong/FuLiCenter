@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.I;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +40,8 @@ public class BoutiqueFragment extends Fragment {
     RecyclerView mRv;
     @BindView(R.id.srl)
     SwipeRefreshLayout mSrl;
+    @BindView(R.id.tvMore)
+    TextView mtvMore;
 
     public BoutiqueFragment() {
         // Required empty public constructor
@@ -47,7 +51,6 @@ public class BoutiqueFragment extends Fragment {
     BoutiqueAdapter mAdapter;
     ArrayList<BoutiqueBean> mList = new ArrayList<>();
     IModelBoutique model;
-    int pageId = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,39 +60,14 @@ public class BoutiqueFragment extends Fragment {
         ButterKnife.bind(this, view);
         initView();
         model = new ModeBoutique();
-        initData();
         setListener();
         return view;
     }
 
     private void setListener() {
         setPullDownListener();
-        setPullUpListener();
     }
 
-    private void setPullUpListener() {
-        mRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                int lastPosition = lm.findLastVisibleItemPosition();
-                if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && mAdapter.isMore()
-                        && lastPosition == mAdapter.getItemCount() - 1) {
-                    pageId++;
-                    downloadList(I.ACTION_PULL_UP, pageId);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                // 让第一页不刷新
-                int fist = lm.findFirstCompletelyVisibleItemPosition();
-                mSrl.setEnabled(fist == 0);
-            }
-        });
-    }
 
     private void setPullDownListener() {
         mSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -97,42 +75,39 @@ public class BoutiqueFragment extends Fragment {
             public void onRefresh() {
                 mSrl.setRefreshing(true);
                 mTvRefresh.setVisibility(View.VISIBLE);
-                pageId = 1;
-                downloadList(I.ACTION_PULL_DOWN, pageId);
+                downloadList(I.ACTION_PULL_DOWN);
             }
         });
     }
 
     private void initData() {
-        pageId = 1;
-        downloadList(I.ACTION_DOWNLOAD, pageId);
+        downloadList(I.ACTION_DOWNLOAD);
     }
 
-    private void downloadList(final int action, int PageId) {
+    private void downloadList(final int action) {
         model.downData(getContext(), new OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
                 mSrl.setRefreshing(false);
+
                 mTvRefresh.setVisibility(View.GONE);
-                mAdapter.setMore(true);
+                mSrl.setVisibility(View.VISIBLE);
+                mtvMore.setVisibility(View.GONE);
+
                 if (result != null && result.length > 0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mAdapter.initData(list);
-                    } else {
-                        mAdapter.addData(list);
-                    }
-                    if (list.size() < I.PAGE_SIZE_DEFAULT) {
-                        mAdapter.setMore(false);
                     }
                 } else {
-                    mAdapter.setMore(false);
+                    mSrl.setVisibility(View.GONE);
+                    mtvMore.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onError(String error) {
-
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -150,5 +125,13 @@ public class BoutiqueFragment extends Fragment {
         mRv.setHasFixedSize(true);
         mAdapter = new BoutiqueAdapter(getContext(), mList);
         mRv.setAdapter(mAdapter);
+
+        mSrl.setVisibility(View.GONE);
+        mtvMore.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.tvMore)
+    public void onClick() {
+        initData();
     }
 }

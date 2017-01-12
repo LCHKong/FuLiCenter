@@ -9,7 +9,8 @@
         android:id="@+id/srl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/list_background">
+        android:background="@color/list_background"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,7 +35,13 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
-
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tvMore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="获取数据错误，请重新加载" />
 
 </LinearLayout>
