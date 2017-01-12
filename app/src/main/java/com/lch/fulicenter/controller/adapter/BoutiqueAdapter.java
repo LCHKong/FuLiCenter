@@ -14,6 +14,7 @@ import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.controller.activity.BoutiqueChildActivity;
 import com.lch.fulicenter.model.bean.BoutiqueBean;
 import com.lch.fulicenter.model.utils.ImageLoader;
+import com.lch.fulicenter.view.MFGT.MFGT;
 
 import java.util.ArrayList;
 
@@ -63,11 +64,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, BoutiqueChildActivity.class).
-                        putExtra(I.NewAndBoutiqueGoods.CAT_ID, mList.get(position).getId())
-                        .putExtra(I.Boutique.TITLE, mList.get(position).getTitle()));
-
-
+                MFGT.gotoBoutiqueChild(mContext, mList.get(position));
             }
         });
 
