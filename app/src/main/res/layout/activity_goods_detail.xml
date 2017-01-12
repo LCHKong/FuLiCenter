@@ -84,6 +84,16 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/good_detail_currency_price" />
 
+        <TextView
+            android:id="@+id/tv_good_price_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_good_price"
+            android:layout_margin="5dp"
+            android:textColor="@color/black" />
+
+
         <RelativeLayout
             android:id="@+id/layout_image"
             android:layout_width="wrap_content"
@@ -91,7 +101,7 @@
             android:layout_below="@id/tv_good_price"
             android:layout_marginTop="50dp">
 
-            <android.support.v4.widget.SlidingPaneLayout
+            <com.lch.fulicenter.view.SlideAutoLoopView
                 android:id="@+id/salv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

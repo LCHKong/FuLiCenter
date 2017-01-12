@@ -5,14 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.I;
+import com.lch.fulicenter.model.bean.AlbumsBean;
 import com.lch.fulicenter.model.bean.GoodsDetailsBean;
 import com.lch.fulicenter.model.net.IModeGoods;
 import com.lch.fulicenter.model.net.ModelGoods;
 import com.lch.fulicenter.model.net.OnCompleteListener;
+import com.lch.fulicenter.view.FlowIndicator;
 import com.lch.fulicenter.view.MFGT.MFGT;
+import com.lch.fulicenter.view.SlideAutoLoopView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +36,12 @@ public class GoodsDetailActivity extends AppCompatActivity {
     TextView mtvGoodName;
     @BindView(R.id.tv_good_price)
     TextView mtvGoodPrice;
+    @BindView(R.id.salv)
+    SlideAutoLoopView msalv;
+    @BindView(R.id.indicator)
+    FlowIndicator mindicator;
+    @BindView(R.id.tv_good_price_shop)
+    TextView mtvGoodPriceShop;
 
 
     @Override
@@ -55,20 +65,48 @@ public class GoodsDetailActivity extends AppCompatActivity {
             public void onSuccess(GoodsDetailsBean result) {
                 if (result != null) {
                     showGoodsDetail(result);
+                } else {
+                    MFGT.finish(GoodsDetailActivity.this);
                 }
             }
 
             @Override
             public void onError(String error) {
-
+                Toast.makeText(GoodsDetailActivity.this, error, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void showGoodsDetail(GoodsDetailsBean result) {
-        String e = getIntent().getStringExtra(I.GoodsDetails.KEY_ENGLISH_NAME);
-        mtvGoodNameEnglish.setText(e);
+    private void showGoodsDetail(GoodsDetailsBean goods) {
+        mtvGoodName.setText(goods.getGoodsName());
+        mtvGoodNameEnglish.setText(goods.getGoodsEnglishName());
+        mtvGoodPriceShop.setText(goods.getCurrencyPrice());
+        mtvGoodPrice.setText(goods.getShopPrice());
+
+        msalv.startPlayLoop(mindicator, getAlbumUrl(goods), getAlbumCount(goods));
+        mwvGoodBrief.loadDataWithBaseURL(null, goods.getGoodsBrief(), I.TEXT_HTML, I.UTF_8, null);
+    }
+
+    private int getAlbumCount(GoodsDetailsBean goods) {
+        if (goods != null && goods.getPromotePrice() != null && goods.getProperties().length > 0) {
+            return goods.getProperties()[0].getAlbums().length;
+        }
+        return 0;
+    }
+
+    private String[] getAlbumUrl(GoodsDetailsBean goods) {
+        if (goods != null && goods.getPromotePrice() != null && goods.getProperties().length > 0) {
+            AlbumsBean[] albums = goods.getProperties()[0].getAlbums();
+            if (albums != null && albums.length > 0) {
+                String[] urls = new String[albums.length];
+                for (int i = 0; i < albums.length; i++) {
+                    urls[i] = albums[i].getImgUrl();
+                }
+                return urls;
+            }
+        }
+        return new String[0];
     }
 
     @OnClick(R.id.ivBack)
