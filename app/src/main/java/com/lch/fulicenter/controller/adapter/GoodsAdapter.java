@@ -133,8 +133,6 @@ public class GoodsAdapter extends RecyclerView.Adapter {
             int goodsId = (int) tvLayoutGoods.getTag();
             mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class)
                     .putExtra(I.GoodsDetails.KEY_GOODS_ID, goodsId));
-
-
         }
     }
 

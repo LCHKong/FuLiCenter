@@ -9,8 +9,7 @@
         android:id="@+id/srl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/list_background"
-        android:visibility="gone">
+        android:background="@color/list_background">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -39,6 +38,7 @@
 
     <TextView
         android:id="@+id/tvMore"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

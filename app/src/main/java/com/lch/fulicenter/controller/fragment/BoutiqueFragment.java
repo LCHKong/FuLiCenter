@@ -60,6 +60,7 @@ public class BoutiqueFragment extends Fragment {
         ButterKnife.bind(this, view);
         initView();
         model = new ModeBoutique();
+        initData();
         setListener();
         return view;
     }

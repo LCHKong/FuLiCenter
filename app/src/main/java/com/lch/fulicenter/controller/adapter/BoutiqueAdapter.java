@@ -1,17 +1,19 @@
 package com.lch.fulicenter.controller.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.I;
+import com.lch.fulicenter.controller.activity.BoutiqueChildActivity;
 import com.lch.fulicenter.model.bean.BoutiqueBean;
 import com.lch.fulicenter.model.utils.ImageLoader;
-import com.lch.fulicenter.view.MFGT.FooterViewHolder;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
     Context mContext;
     ArrayList<BoutiqueBean> mList;
     String footer;
+
 
     public String getFooter() {
         return footer;
@@ -51,12 +54,22 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder ParentHolder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder ParentHolder, final int position) {
         BoutiqueViewHolder vh = (BoutiqueViewHolder) ParentHolder;
         ImageLoader.downloadImg(mContext, vh.mivBoutiqueImg, mList.get(position).getImageurl());
         vh.mtvBoutiqueName.setText(mList.get(position).getName());
         vh.mtvBoutiqueTitle.setText(mList.get(position).getTitle());
         vh.mtvBoutiqueDescription.setText(mList.get(position).getDescription());
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, BoutiqueChildActivity.class).
+                        putExtra(I.NewAndBoutiqueGoods.CAT_ID, mList.get(position).getId())
+                        .putExtra(I.Boutique.TITLE, mList.get(position).getTitle()));
+
+
+            }
+        });
 
     }
 
@@ -78,6 +91,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         mList.addAll(list);
         notifyDataSetChanged();
     }
+
 
     static class BoutiqueViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.ivBoutiqueImg)
