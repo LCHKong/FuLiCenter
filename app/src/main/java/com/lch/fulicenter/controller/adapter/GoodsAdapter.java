@@ -15,6 +15,7 @@ import com.lch.fulicenter.controller.activity.GoodsDetailActivity;
 import com.lch.fulicenter.model.bean.NewGoodsBean;
 import com.lch.fulicenter.model.utils.ImageLoader;
 import com.lch.fulicenter.view.MFGT.FooterViewHolder;
+import com.lch.fulicenter.view.MFGT.MFGT;
 
 import java.util.ArrayList;
 
@@ -70,7 +71,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder ParentHolder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder ParentHolder, final int position) {
         if (getItemViewType(position) == I.TYPE_FOOTER) {
             FooterViewHolder vh = (FooterViewHolder) ParentHolder;
             vh.tvFooter.setText(getFooter());
@@ -83,7 +84,12 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         NewGoodsBean goods = mList.get(position);
         vh.mTvGoodsName.setText(mList.get(position).getGoodsName());
         vh.mTvGoodsPrice.setText(mList.get(position).getCurrencyPrice());
-        vh.tvLayoutGoods.setTag(goods.getGoodsId());
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MFGT.gotoGoodsDettail(mContext, mList.get(position).getGoodsId());
+            }
+        });
 
     }
 
@@ -128,13 +134,5 @@ public class GoodsAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
 
-        @OnClick(R.id.layout_goods)
-        public void onGoodsItemClick() {
-            int goodsId = (int) tvLayoutGoods.getTag();
-            mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class)
-                    .putExtra(I.GoodsDetails.KEY_GOODS_ID, goodsId));
-        }
     }
-
-
 }
