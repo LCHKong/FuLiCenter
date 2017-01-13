@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.controller.adapter.CategoryAdapter;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class CategoryFragment extends Fragment {
-    IModelNewCategory mModel;
+    IModelNewCategory model;
     CategoryAdapter mAdapter;
     ArrayList<CategoryGroupBean> mGroupBean = new ArrayList<>();
     ArrayList<ArrayList<CategoryChildBean>> mChildBean = new ArrayList<>();
@@ -58,50 +59,51 @@ public class CategoryFragment extends Fragment {
 
 
     private void initData() {
-        mModel = new ModelCategory();
-        mModel.downData(getContext(), new OnCompleteListener<CategoryGroupBean[]>() {
+        model = new ModelCategory();
+        model.downData(getContext(), new OnCompleteListener<CategoryGroupBean[]>() {
             @Override
             public void onSuccess(CategoryGroupBean[] result) {
                 if (result != null) {
                     initView(true);
-                    ArrayList<CategoryGroupBean> groupList = ConvertUtils.array2List(result);
-                    mGroupBean.addAll(groupList);
-                    for (int i = 0; i < groupList.size(); i++) {
-                        downloadChildData(groupList.get(i).getId());
+                    ArrayList<CategoryGroupBean> list = ConvertUtils.array2List(result);
+                    mGroupBean.addAll(list);
+                    for (int i = 0; i < list.size(); i++) {
+                        mChildBean.add(new ArrayList<CategoryChildBean>());
+                        downloadChildData(list.get(i).getId(), i);
                     }
-
                 } else {
                     initView(false);
-
                 }
             }
 
             @Override
             public void onError(String error) {
-                Log.i("main", error);
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     // 下载小类
-    private void downloadChildData(int id) {
-        mModel.downData(getContext(), id, new OnCompleteListener<CategoryChildBean[]>() {
+    private void downloadChildData(int id, final int index) {
+        model.downData(getContext(), id, new OnCompleteListener<CategoryChildBean[]>() {
             @Override
             public void onSuccess(CategoryChildBean[] result) {
                 groupCount++;
                 if (result != null) {
-                    ArrayList<CategoryChildBean> childList = ConvertUtils.array2List(result);
-                    mChildBean.add(childList);
+                    ArrayList<CategoryChildBean> list = ConvertUtils.array2List(result);
+                    mChildBean.set(index, list);
                 }
                 if (groupCount == mGroupBean.size()) {
                     mAdapter.initData(mGroupBean, mChildBean);
                 }
+
+
             }
 
             @Override
             public void onError(String error) {
-                Log.i("mian", error);
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
     }
