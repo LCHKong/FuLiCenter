@@ -38,7 +38,7 @@
             android:button="@null"
             android:checked="false"
             android:drawableTop="@drawable/selector_menu_item_category"
-            android:text="收藏"
+            android:text="分类"
             android:textColor="@color/main_botton_text_color" />
 
         <RadioButton

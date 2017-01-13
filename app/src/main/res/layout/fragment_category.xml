@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.lch.fulicenter.controller.fragment.CategoryFragment">
+
+    <ExpandableListView
+        android:id="@+id/elv_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/list_background"
+        android:dividerHeight="8dp" />
+
+    <TextView
+        android:id="@+id/tv_nomore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/load_more"
+        android:visibility="gone" />
+</LinearLayout>

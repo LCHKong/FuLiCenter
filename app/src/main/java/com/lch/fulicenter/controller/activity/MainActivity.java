@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.controller.fragment.BoutiqueFragment;
+import com.lch.fulicenter.controller.fragment.CategoryFragment;
 import com.lch.fulicenter.controller.fragment.NewGoodsFragment;
 
 import butterknife.BindView;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     NewGoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFargment;
+    CategoryFragment mCategoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +49,18 @@ public class MainActivity extends AppCompatActivity {
         rbs[4] = layoutPersonalCenter;
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutiqueFargment = new BoutiqueFragment();
+        mCategoryFragment = new CategoryFragment();
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFargment;
+        mFragment[2] = mCategoryFragment;
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .add(R.id.fragment_container, mBoutiqueFargment)
+                .add(R.id.fragment_container, mCategoryFragment)
                 .show(mNewGoodsFragment)
                 .hide(mBoutiqueFargment)
+                .hide(mCategoryFragment)
                 .commit();
 
     }
