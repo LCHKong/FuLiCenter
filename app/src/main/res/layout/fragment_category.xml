@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/list_background"
-        android:dividerHeight="8dp" />
+        android:dividerHeight="8dp"
+        android:groupIndicator="@null" />
 
     <TextView
         android:id="@+id/tv_nomore"

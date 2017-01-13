@@ -1,5 +1,8 @@
 package com.lch.fulicenter.model.bean;
 
+import android.util.Log;
+import android.util.LongSparseArray;
+
 import java.io.Serializable;
 
 public class NewGoodsBean implements Serializable {
@@ -42,7 +45,7 @@ public class NewGoodsBean implements Serializable {
     private String colorName;
     private String colorCode;
     private String colorUrl;
-    private String addTime;
+    private Long addTime;
 
     public int getId() {
         return id;
@@ -180,11 +183,11 @@ public class NewGoodsBean implements Serializable {
         this.colorUrl = colorUrl;
     }
 
-    public String getAddTime() {
+    public Long getAddTime() {
         return addTime;
     }
 
-    public void setAddTime(String addTime) {
+    public void setAddTime(Long addTime) {
         this.addTime = addTime;
     }
 

@@ -170,4 +170,9 @@ public class NewGoodsFragment extends Fragment {
         mAdapter = new GoodsAdapter(getContext(), mList);
         mRv.setAdapter(mAdapter);
     }
+
+    // 排序
+    public void sortGoods(int sortBy) {
+        mAdapter.sorfGoods(sortBy);
+    }
 }
