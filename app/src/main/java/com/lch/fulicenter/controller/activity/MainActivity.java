@@ -7,9 +7,12 @@ import android.view.View;
 import android.widget.RadioButton;
 
 import com.lch.fulicenter.R;
+import com.lch.fulicenter.application.FuLiCenterApplication;
 import com.lch.fulicenter.controller.fragment.BoutiqueFragment;
 import com.lch.fulicenter.controller.fragment.CategoryFragment;
 import com.lch.fulicenter.controller.fragment.NewGoodsFragment;
+import com.lch.fulicenter.controller.fragment.PersonalCenterFragment;
+import com.lch.fulicenter.view.MFGT.MFGT;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     NewGoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFargment;
     CategoryFragment mCategoryFragment;
+    PersonalCenterFragment mPersonalCenterFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +54,21 @@ public class MainActivity extends AppCompatActivity {
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutiqueFargment = new BoutiqueFragment();
         mCategoryFragment = new CategoryFragment();
+        mPersonalCenterFragment = new PersonalCenterFragment();
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFargment;
         mFragment[2] = mCategoryFragment;
+        mFragment[4] = mPersonalCenterFragment;
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .add(R.id.fragment_container, mBoutiqueFargment)
                 .add(R.id.fragment_container, mCategoryFragment)
+                .add(R.id.fragment_container, mPersonalCenterFragment)
                 .show(mNewGoodsFragment)
                 .hide(mBoutiqueFargment)
                 .hide(mCategoryFragment)
+                .hide(mPersonalCenterFragment)
                 .commit();
 
     }
@@ -80,7 +88,11 @@ public class MainActivity extends AppCompatActivity {
                 index = 3;
                 break;
             case R.id.layout_personal_center:
-                index = 4;
+                if (FuLiCenterApplication.getUser() == null) {
+                    MFGT.gotoLogin(this);
+                } else {
+                    index = 4;
+                }
                 break;
         }
         setFragment();
@@ -103,8 +115,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         currentIndex = index;
-    }
-
-    public void onClick(View view) {
     }
 }
