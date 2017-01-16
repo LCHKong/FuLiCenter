@@ -14,7 +14,7 @@
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
     </style>
-    
+
     <style name="chat_text_date_style">
         <item name="android:padding">2dp</item>
         <item name="android:paddingTop">2dip</item>
@@ -70,15 +70,14 @@
     <style name="horizontal_slide" parent="android:Theme.NoTitleBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
     </style>
-    
-    <style name="nornal_style" parent="android:Theme.NoTitleBar"/>
+
+    <style name="nornal_style" parent="android:Theme.NoTitleBar" />
 
     <!--
     <style name="horizontal_slide2" parent="android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AnimFade2</item>
     </style>
     -->
-
 
 
     <style name="MyDialogStyle">
@@ -154,7 +153,7 @@
     </style>
 
 
- <style name="bottom_line_edit_text_style" parent="@android:style/Widget.EditText">
+    <style name="bottom_line_edit_text_style" parent="@android:style/Widget.EditText">
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">6.0dip</item>
         <item name="android:paddingTop">6.0dip</item>
@@ -163,10 +162,12 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@drawable/ease_edit_text_bg</item>
     </style>
+
     <style name="styles_pop_window">
         <item name="@android:windowEnterAnimation">@anim/pop_enter</item>
         <item name="@android:windowExitAnimation">@anim/pop_exit</item>
     </style>
+
     <style name="style_menu_btn">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -186,6 +187,7 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_marginTop">2dp</item>
     </style>
+
     <style name="style_divide_line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
@@ -208,6 +210,7 @@
         <item name="android:textColor">#fff</item>
         <item name="android:onClick">onCheckedChange</item>
     </style>
+
     <style name="menu_item_style_cart">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -236,6 +239,16 @@
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:background">#fff</item>
     </style>
+
+    <style name="style_menu_list_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">65dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:background">#fff</item>
+    </style>
+
     <style name="CustomCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/checkbox_style</item>
     </style>
