@@ -12,6 +12,8 @@ import com.lch.fulicenter.controller.activity.GoodsDetailActivity;
 import com.lch.fulicenter.model.bean.BoutiqueBean;
 import com.lch.fulicenter.model.bean.CategoryChildBean;
 
+import java.util.ArrayList;
+
 /**
  * Created by LCH on 2017/1/10.
  */
@@ -46,10 +48,11 @@ public class MFGT {
         startActivity((Activity) context, intent);
     }
 
-    public static void gotoCategoryChild(Context context, int catId, String groupName) {
+    public static void gotoCategoryChild(Context context, int catId, String groupName, ArrayList<CategoryChildBean> list) {
         Intent intent = new Intent(context, CategoryChildActivity.class);
         intent.putExtra(I.NewAndBoutiqueGoods.CAT_ID, catId);
         intent.putExtra(I.CategoryGroup.NAME, groupName);
+        intent.putExtra(I.CategoryChild.DATA, list);
         startActivity((Activity) context, intent);
     }
 }

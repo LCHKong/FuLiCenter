@@ -10,8 +10,11 @@ import android.widget.TextView;
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.controller.fragment.NewGoodsFragment;
+import com.lch.fulicenter.model.bean.CategoryChildBean;
 import com.lch.fulicenter.view.CatFilterButton;
 import com.lch.fulicenter.view.MFGT.MFGT;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +45,8 @@ public class CategoryChildActivity extends AppCompatActivity {
                 .add(R.id.fragment_container1, mNewGoodsFragment)
                 .commit();
         String groupName = getIntent().getStringExtra(I.CategoryGroup.NAME);
-        mCatFilter.initCatFilterButton(groupName, null);
+        ArrayList<CategoryChildBean> list = (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra(I.CategoryChild.DATA);
+        mCatFilter.initCatFilterButton(groupName, list);
     }
 
     @OnClick({R.id.btnPriceSort, R.id.btnAddTimeSort})
