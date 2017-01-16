@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.controller.fragment.NewGoodsFragment;
+import com.lch.fulicenter.view.CatFilterButton;
 import com.lch.fulicenter.view.MFGT.MFGT;
 
 import butterknife.BindView;
@@ -21,12 +22,12 @@ public class CategoryChildActivity extends AppCompatActivity {
     boolean priceAsc = false;
     boolean addTimeAsc = false;
 
-    @BindView(R.id.tv_common_title)
-    TextView tvCommonTitle;
     @BindView(R.id.btnPriceSort)
     Button btnPriceSort;
     @BindView(R.id.btnAddTimeSort)
     Button btnAddTimeSort;
+    @BindView(R.id.cat_filter)
+    CatFilterButton mCatFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class CategoryChildActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container1, mNewGoodsFragment)
                 .commit();
+        String groupName = getIntent().getStringExtra(I.CategoryGroup.NAME);
+        mCatFilter.initCatFilterButton(groupName, null);
     }
 
     @OnClick({R.id.btnPriceSort, R.id.btnAddTimeSort})
