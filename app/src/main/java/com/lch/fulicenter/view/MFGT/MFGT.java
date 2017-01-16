@@ -58,11 +58,11 @@ public class MFGT {
         startActivity((Activity) context, intent);
     }
 
-    public static void gotoLogin(Context context) {
-        startActivity((Activity) context, LoginActivity.class);
+    public static void gotoLogin(Activity context) {
+        startActivity(context, LoginActivity.class);
     }
 
-    public static void gotoRegister(Context context) {
-        startActivity((Activity) context, RegisterActivity.class);
+    public static void gotoRegister(Activity context) {
+        startActivity(context, RegisterActivity.class);
     }
 }
