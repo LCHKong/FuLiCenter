@@ -27,15 +27,14 @@ public class MFGT {
     }
 
     public static void startActivity(Activity context, Class<?> clz) {
-        context.overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
         context.startActivity(new Intent(context, clz));
+        context.overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
     }
 
     public static void startActivity(Activity context, Intent intent) {
         context.startActivity(intent);
         context.overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
     }
-
 
     public static void gotoBoutiqueChild(Context context, BoutiqueBean boutiqueBean) {
         Intent intent = new Intent(context, BoutiqueChildActivity.class);
@@ -44,7 +43,7 @@ public class MFGT {
         startActivity((Activity) context, intent);
     }
 
-    public static void gotoGoodsDettail(Context context, int goodsId) {
+    public static void gotoGoodsDetail(Context context, int goodsId) {
         Intent intent = new Intent(context, GoodsDetailActivity.class);
         intent.putExtra(I.GoodsDetails.KEY_GOODS_ID, goodsId);
         startActivity((Activity) context, intent);
@@ -62,7 +61,7 @@ public class MFGT {
         startActivity(context, LoginActivity.class);
     }
 
-    public static void gotoRegister(Activity context) {
-        startActivity(context, RegisterActivity.class);
+    public static void gotoRegister(LoginActivity registerActivity) {
+        startActivity(registerActivity, RegisterActivity.class);
     }
 }

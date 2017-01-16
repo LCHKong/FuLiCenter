@@ -89,7 +89,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MFGT.gotoGoodsDettail(mContext, mList.get(position).getGoodsId());
+                MFGT.gotoGoodsDetail(mContext, mList.get(position).getGoodsId());
             }
         });
 

@@ -104,12 +104,10 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     } else {
                         CommonUtils.showLongToast(R.string.register_fail);
-
                     }
                 }
                 dialog.dismiss();
             }
-
             @Override
             public void onError(String error) {
                 dialog.dismiss();

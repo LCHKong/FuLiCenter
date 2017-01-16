@@ -18,9 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-
+    int index, currentIndex;
+    RadioButton[] rbs = new RadioButton[5];
     @BindView(R.id.layout_new_goods)
-    RadioButton layoutNewGoods;
+    RadioButton layoutNewGood;
     @BindView(R.id.layout_boutique)
     RadioButton layoutBoutique;
     @BindView(R.id.layout_category)
@@ -29,44 +30,37 @@ public class MainActivity extends AppCompatActivity {
     RadioButton layoutCart;
     @BindView(R.id.layout_personal_center)
     RadioButton layoutPersonalCenter;
-
-
-    int index, currentIndex;
-    Fragment mFragment[] = new Fragment[5];
-    RadioButton[] rbs = new RadioButton[5];
-
+    Fragment[] mFragments = new Fragment[5];
     NewGoodsFragment mNewGoodsFragment;
-    BoutiqueFragment mBoutiqueFargment;
+    BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
     PersonalCenterFragment mPersonalCenterFragment;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        rbs[0] = layoutNewGoods;
+        rbs[0] = layoutNewGood;
         rbs[1] = layoutBoutique;
         rbs[2] = layoutCategory;
         rbs[3] = layoutCart;
         rbs[4] = layoutPersonalCenter;
         mNewGoodsFragment = new NewGoodsFragment();
-        mBoutiqueFargment = new BoutiqueFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
         mCategoryFragment = new CategoryFragment();
         mPersonalCenterFragment = new PersonalCenterFragment();
-        mFragment[0] = mNewGoodsFragment;
-        mFragment[1] = mBoutiqueFargment;
-        mFragment[2] = mCategoryFragment;
-        mFragment[4] = mPersonalCenterFragment;
 
+        mFragments[0] = mNewGoodsFragment;
+        mFragments[1] = mBoutiqueFragment;
+        mFragments[2] = mCategoryFragment;
+        mFragments[4] = mPersonalCenterFragment;
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
-                .add(R.id.fragment_container, mBoutiqueFargment)
+                .add(R.id.fragment_container, mBoutiqueFragment)
                 .add(R.id.fragment_container, mCategoryFragment)
                 .add(R.id.fragment_container, mPersonalCenterFragment)
                 .show(mNewGoodsFragment)
-                .hide(mBoutiqueFargment)
+                .hide(mBoutiqueFragment)
                 .hide(mCategoryFragment)
                 .hide(mPersonalCenterFragment)
                 .commit();
@@ -98,12 +92,13 @@ public class MainActivity extends AppCompatActivity {
         setFragment();
         if (index != currentIndex) {
             setRadioStatus();
+        } else {
+            getSupportFragmentManager().beginTransaction().show(mFragments[index]).commit();
         }
     }
 
     private void setFragment() {
-        getSupportFragmentManager().beginTransaction().show(mFragment[index])
-                .hide(mFragment[currentIndex]).commit();
+        getSupportFragmentManager().beginTransaction().show(mFragments[index]).hide(mFragments[currentIndex]).commit();
     }
 
     private void setRadioStatus() {
