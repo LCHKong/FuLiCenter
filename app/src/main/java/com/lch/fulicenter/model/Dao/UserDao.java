@@ -33,4 +33,8 @@ public class UserDao {
     public boolean savaUser(User user) {
         return DBManager.getInstance().saveUser(user);
     }
+
+    public User getUser(String userName) {
+        return DBManager.getInstance().getUser(userName);
+    }
 }

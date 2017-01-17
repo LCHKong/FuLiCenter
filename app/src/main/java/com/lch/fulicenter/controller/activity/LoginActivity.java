@@ -88,8 +88,10 @@ public class LoginActivity extends AppCompatActivity {
                             // 保存到数据库
                             boolean savaUser = UserDao.getInstance().savaUser(user);
                             L.e("main", "savaUser=" + savaUser);
-                            SharePrefrenceUtils.getInstance(LoginActivity.this).saveUser(user.getMuserName());
-                            FuLiCenterApplication.setUser(user);
+                            if (savaUser) {
+                                SharePrefrenceUtils.getInstance(LoginActivity.this).saveUser(user.getMuserName());
+                                FuLiCenterApplication.setUser(user);
+                            }
                             MFGT.finish(LoginActivity.this);
                         } else {
                             if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {
