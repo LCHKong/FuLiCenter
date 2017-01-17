@@ -13,4 +13,6 @@ public interface IModelUser {
 
     void register(Context context, String userName, String userNick, String passWord, OnCompleteListener<String> listener);
 
+    void update(Context context, String userName, String userNick, OnCompleteListener<String> listener);
+
 }

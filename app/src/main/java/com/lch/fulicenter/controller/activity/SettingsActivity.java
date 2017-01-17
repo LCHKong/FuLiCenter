@@ -2,6 +2,8 @@ package com.lch.fulicenter.controller.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,11 +50,28 @@ public class SettingsActivity extends AppCompatActivity {
         mtvUserNick.setText(user.getMuserNick());
     }
 
-    @OnClick(R.id.btBack)
-    public void logout() {
-        FuLiCenterApplication.setUser(null);
-        SharePrefrenceUtils.getInstance(this).removeUser();
-        MFGT.gotoLogin(this);
-        finish();
+
+    // 修改昵称
+    @OnClick(R.id.layout_user_nickname)
+    public void onClick() {
+        String nick = mtvUserNick.getText().toString().trim();
+        if (TextUtils.isEmpty(nick)) {
+
+        }
+    }
+
+    @OnClick({R.id.ivBack, R.id.btBack})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ivBack:
+                MFGT.finish(this);
+                break;
+            case R.id.btBack:
+                FuLiCenterApplication.setUser(null);
+                SharePrefrenceUtils.getInstance(this).removeUser();
+                MFGT.gotoLogin(this);
+                MFGT.finish(this);
+                break;
+        }
     }
 }
