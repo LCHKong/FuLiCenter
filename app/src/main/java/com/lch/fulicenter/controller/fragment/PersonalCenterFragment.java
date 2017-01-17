@@ -11,13 +11,13 @@ import android.widget.TextView;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.FuLiCenterApplication;
-import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.model.bean.User;
 import com.lch.fulicenter.model.utils.ImageLoader;
 import com.lch.fulicenter.view.MFGT.MFGT;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,8 +53,12 @@ public class PersonalCenterFragment extends Fragment {
     }
 
     private void loadUserInfo(User user) {
-        ImageLoader.downloadImg(getContext(), mivUserAvatar, user.getAvatarPath());
+        ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), getContext(), mivUserAvatar);
         mtvUserName.setText(user.getMuserNick());
     }
 
+    @OnClick({R.id.center_top, R.id.center_user_info})
+    public void setting() {
+        MFGT.gotoSetting(getActivity());
+    }
 }

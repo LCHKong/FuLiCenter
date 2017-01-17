@@ -1,5 +1,6 @@
 package com.lch.fulicenter.controller.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +10,7 @@ import android.widget.RadioButton;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.FuLiCenterApplication;
+import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.controller.fragment.BoutiqueFragment;
 import com.lch.fulicenter.controller.fragment.CategoryFragment;
 import com.lch.fulicenter.controller.fragment.NewGoodsFragment;
@@ -113,5 +115,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         currentIndex = index;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setRadioStatus();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == I.REQUEST_CODE_LOGIN) {
+            index = 4;
+            setFragment();
+            setRadioStatus();
+        }
     }
 }
