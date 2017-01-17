@@ -1,6 +1,7 @@
 package com.lch.fulicenter.controller.activity;
 
 import android.app.ProgressDialog;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -11,12 +12,14 @@ import android.widget.EditText;
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.FuLiCenterApplication;
 import com.lch.fulicenter.application.I;
+import com.lch.fulicenter.model.Dao.UserDao;
 import com.lch.fulicenter.model.bean.Result;
 import com.lch.fulicenter.model.bean.User;
 import com.lch.fulicenter.model.net.IModelUser;
 import com.lch.fulicenter.model.net.ModelUser;
 import com.lch.fulicenter.model.net.OnCompleteListener;
 import com.lch.fulicenter.model.utils.CommonUtils;
+import com.lch.fulicenter.model.utils.L;
 import com.lch.fulicenter.model.utils.ResultUtils;
 import com.lch.fulicenter.model.utils.SharePrefrenceUtils;
 import com.lch.fulicenter.view.MFGT.MFGT;
@@ -82,6 +85,9 @@ public class LoginActivity extends AppCompatActivity {
                     if (result != null) {
                         if (result.isRetMsg()) {
                             User user = (User) result.getRetData();
+                            // 保存到数据库
+                            boolean savaUser = UserDao.getInstance().savaUser(user);
+                            L.e("main", "savaUser=" + savaUser);
                             SharePrefrenceUtils.getInstance(LoginActivity.this).saveUser(user.getMuserName());
                             FuLiCenterApplication.setUser(user);
                             MFGT.finish(LoginActivity.this);
