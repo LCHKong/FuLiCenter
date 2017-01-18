@@ -1,5 +1,6 @@
 package com.lch.fulicenter.controller.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.FuLiCenterApplication;
+import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.model.bean.User;
 import com.lch.fulicenter.model.utils.ImageLoader;
 import com.lch.fulicenter.model.utils.SharePrefrenceUtils;
@@ -51,15 +53,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    // 修改昵称
-    @OnClick(R.id.layout_user_nickname)
-    public void onClick() {
-        String nick = mtvUserNick.getText().toString().trim();
-        if (TextUtils.isEmpty(nick)) {
-
-        }
-    }
-
     @OnClick({R.id.ivBack, R.id.btBack})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -72,6 +65,20 @@ public class SettingsActivity extends AppCompatActivity {
                 MFGT.gotoLogin(this);
                 MFGT.finish(this);
                 break;
+        }
+    }
+
+    // 修改昵称
+    @OnClick(R.id.layout_user_nickname)
+    public void onClick() {
+        MFGT.gotoUpDateNick(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == I.REQUEST_CODE_NICK) {
+            mtvUserNick.setText(FuLiCenterApplication.getUser().getMuserNick());
         }
     }
 }
