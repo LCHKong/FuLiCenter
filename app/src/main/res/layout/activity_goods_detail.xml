@@ -6,55 +6,6 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/layout_title"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:background="@color/main_orange">
-
-        <include layout="@layout/common_head_title" />
-
-        <ImageView
-            android:id="@+id/iv_good_share"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:padding="5dp"
-            android:src="@drawable/selector_share_bg" />
-
-        <ImageView
-            android:id="@+id/iv_good_collect"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/iv_good_share"
-            android:padding="5dp"
-            android:src="@mipmap/bg_collect_in" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/iv_good_collect">
-
-            <ImageView
-                android:id="@+id/iv_good_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:padding="5dp"
-                android:src="@mipmap/bg_cart_selected" />
-
-            <TextView
-                android:id="@+id/tv_cart_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:textColor="#f00" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/layout_banner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -127,5 +78,56 @@
             android:layout_below="@id/layout_image"
             android:layout_margin="10dp"
             android:background="@color/good_detail_bg_white" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/main_orange"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <include layout="@layout/common_head_title" />
+
+        <ImageView
+            android:id="@+id/iv_good_share"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="5dp"
+            android:src="@drawable/selector_share_bg" />
+
+        <ImageView
+            android:id="@+id/iv_good_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/iv_good_share"
+            android:padding="5dp"
+            android:src="@mipmap/bg_collect_in" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/iv_good_collect">
+
+            <ImageView
+                android:id="@+id/iv_good_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:padding="5dp"
+                android:src="@mipmap/bg_cart_selected" />
+
+            <TextView
+                android:id="@+id/tv_cart_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:textColor="#f00" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
 </RelativeLayout>

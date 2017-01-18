@@ -8,12 +8,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lch.fulicenter.R;
+import com.lch.fulicenter.application.FuLiCenterApplication;
 import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.model.bean.AlbumsBean;
 import com.lch.fulicenter.model.bean.GoodsDetailsBean;
+import com.lch.fulicenter.model.bean.MessageBean;
+import com.lch.fulicenter.model.bean.User;
 import com.lch.fulicenter.model.net.IModeGoods;
 import com.lch.fulicenter.model.net.ModelGoods;
 import com.lch.fulicenter.model.net.OnCompleteListener;
+import com.lch.fulicenter.model.utils.CommonUtils;
 import com.lch.fulicenter.view.FlowIndicator;
 import com.lch.fulicenter.view.MFGT.MFGT;
 import com.lch.fulicenter.view.SlideAutoLoopView;
@@ -25,6 +29,7 @@ import butterknife.OnClick;
 public class GoodsDetailActivity extends AppCompatActivity {
     int goodsId = 0;
     IModeGoods mModel;
+    boolean isCollect;
 
     @BindView(R.id.ivBack)
     ImageView mivBack;
@@ -42,6 +47,8 @@ public class GoodsDetailActivity extends AppCompatActivity {
     FlowIndicator mindicator;
     @BindView(R.id.tv_good_price_shop)
     TextView mtvGoodPriceShop;
+    @BindView(R.id.iv_good_collect)
+    ImageView mivGoodCollect;
 
 
     @Override
@@ -113,4 +120,73 @@ public class GoodsDetailActivity extends AppCompatActivity {
     public void onClick() {
         MFGT.finish(this);
     }
+
+    @OnClick(R.id.iv_good_collect)
+    public void setCollectListener() {
+        User user = FuLiCenterApplication.getUser();
+        if (user != null) {
+            setCollect(user);
+        } else {
+            MFGT.gotoSetting(this);
+        }
+    }
+
+    private void setCollect(User user) {
+        mModel.setCollect(this, goodsId, user.getMuserName(),
+                isCollect ? I.ACTION_DELETE_COLLECT : I.ACTION_ADD_COLLECT,
+                new OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            isCollect = !isCollect;
+                            setCollectStatus();
+                            CommonUtils.showShortToast(result.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initCollectStatus();
+    }
+
+    private void initCollectStatus() {
+        User user = FuLiCenterApplication.getUser();
+        if (user != null) {
+            mModel.isCollect(this, goodsId, user.getMuserName(), new OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result != null && result.isSuccess()) {
+                        isCollect = true;
+                    } else {
+                        isCollect = false;
+                    }
+                    setCollectStatus();
+                }
+
+                @Override
+                public void onError(String error) {
+                    isCollect = false;
+                    setCollectStatus();
+                }
+            });
+        }
+    }
+
+    private void setCollectStatus() {
+        if (isCollect) {
+            mivGoodCollect.setImageResource(R.mipmap.bg_collect_out);
+        }else {
+            mivGoodCollect.setImageResource(R.mipmap.bg_collect_in);
+        }
+    }
+
+
 }
