@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.lch.fulicenter.model.bean.User;
 
+import java.io.File;
+
 /**
  * Created by LCH on 2017/1/16.
  */
@@ -14,5 +16,7 @@ public interface IModelUser {
     void register(Context context, String userName, String userNick, String passWord, OnCompleteListener<String> listener);
 
     void update(Context context, String userName, String userNick, OnCompleteListener<String> listener);
+
+    void uploadAvatar(Context context, String userName, File file, OnCompleteListener<String> listener);
 
 }
