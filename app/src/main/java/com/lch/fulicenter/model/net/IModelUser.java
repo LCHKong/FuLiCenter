@@ -2,7 +2,9 @@ package com.lch.fulicenter.model.net;
 
 import android.content.Context;
 
+import com.lch.fulicenter.model.bean.MessageBean;
 import com.lch.fulicenter.model.bean.User;
+import com.lch.fulicenter.model.utils.OkHttpUtils;
 
 import java.io.File;
 
@@ -18,5 +20,7 @@ public interface IModelUser {
     void update(Context context, String userName, String userNick, OnCompleteListener<String> listener);
 
     void uploadAvatar(Context context, String userName, File file, OnCompleteListener<String> listener);
+
+    void collecCount(Context context, String userName, OnCompleteListener<MessageBean> listener);
 
 }

@@ -11,7 +11,11 @@ import android.widget.TextView;
 
 import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.FuLiCenterApplication;
+import com.lch.fulicenter.model.bean.MessageBean;
 import com.lch.fulicenter.model.bean.User;
+import com.lch.fulicenter.model.net.IModelUser;
+import com.lch.fulicenter.model.net.ModelUser;
+import com.lch.fulicenter.model.net.OnCompleteListener;
 import com.lch.fulicenter.model.utils.ImageLoader;
 import com.lch.fulicenter.view.MFGT.MFGT;
 
@@ -23,12 +27,15 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class PersonalCenterFragment extends Fragment {
+    IModelUser mModel;
 
 
     @BindView(R.id.ivUserAvatar)
     ImageView mivUserAvatar;
     @BindView(R.id.tvUserName)
     TextView mtvUserName;
+    @BindView(R.id.tvCollectCount)
+    TextView mtvCollectCount;
 
     public PersonalCenterFragment() {
     }
@@ -47,6 +54,7 @@ public class PersonalCenterFragment extends Fragment {
         User user = FuLiCenterApplication.getUser();
         if (user != null) {
             loadUserInfo(user);
+            getCollectCount();
         }
     }
 
@@ -59,6 +67,31 @@ public class PersonalCenterFragment extends Fragment {
     private void loadUserInfo(User user) {
         ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), getContext(), mivUserAvatar);
         mtvUserName.setText(user.getMuserNick());
+        loadCollectCount("0");
+    }
+
+    private void getCollectCount() {
+        mModel = new ModelUser();
+        mModel.collecCount(getContext(), FuLiCenterApplication.getUser().getMuserName(),
+                new OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            loadCollectCount(result.getMsg());
+                        } else {
+                            loadCollectCount("0");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        loadCollectCount("0");
+                    }
+                });
+    }
+
+    private void loadCollectCount(String count) {
+        mtvCollectCount.setText(String.valueOf(count));
     }
 
     @OnClick({R.id.center_top, R.id.center_user_info})

@@ -3,6 +3,7 @@ package com.lch.fulicenter.model.net;
 import android.content.Context;
 
 import com.lch.fulicenter.application.I;
+import com.lch.fulicenter.model.bean.MessageBean;
 import com.lch.fulicenter.model.utils.MD5;
 import com.lch.fulicenter.model.utils.OkHttpUtils;
 
@@ -49,11 +50,20 @@ public class ModelUser implements IModelUser {
     public void uploadAvatar(Context context, String userName, File file, OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_UPDATE_AVATAR)
-                .addParam(I.NAME_OR_HXID,userName)
-                .addParam(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
+                .addParam(I.NAME_OR_HXID, userName)
+                .addParam(I.AVATAR_TYPE, I.AVATAR_TYPE_USER_PATH)
                 .addFile2(file)
                 .post()
                 .targetClass(String.class)
+                .execute(listener);
+    }
+
+    @Override
+    public void collecCount(Context context, String userName, OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
+                .addParam(I.Collect.USER_NAME, userName)
+                .targetClass(MessageBean.class)
                 .execute(listener);
     }
 }
