@@ -16,7 +16,9 @@ import com.lch.fulicenter.model.bean.GoodsDetailsBean;
 import com.lch.fulicenter.model.bean.MessageBean;
 import com.lch.fulicenter.model.bean.User;
 import com.lch.fulicenter.model.net.IModeGoods;
+import com.lch.fulicenter.model.net.IModelUser;
 import com.lch.fulicenter.model.net.ModelGoods;
+import com.lch.fulicenter.model.net.ModelUser;
 import com.lch.fulicenter.model.net.OnCompleteListener;
 import com.lch.fulicenter.model.utils.CommonUtils;
 import com.lch.fulicenter.view.FlowIndicator;
@@ -31,6 +33,7 @@ public class GoodsDetailActivity extends AppCompatActivity {
     int goodsId = 0;
     IModeGoods mModel;
     boolean isCollect;
+    IModelUser mUserModel;
 
     @BindView(R.id.ivBack)
     ImageView mivBack;
@@ -186,10 +189,28 @@ public class GoodsDetailActivity extends AppCompatActivity {
     private void setCollectStatus() {
         if (isCollect) {
             mivGoodCollect.setImageResource(R.mipmap.bg_collect_out);
-        }else {
+        } else {
             mivGoodCollect.setImageResource(R.mipmap.bg_collect_in);
         }
     }
 
 
+    @OnClick(R.id.iv_good_cart)
+    public void addCart() {
+        User user = FuLiCenterApplication.getUser();
+        mUserModel = new ModelUser();
+        mUserModel.updateCart(this, I.ACTION_CART_ADD, user.getMuserName(), goodsId, 1, 0, new OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result != null && result.isSuccess()) {
+                    CommonUtils.showShortToast(R.string.add_goods_success);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
 }

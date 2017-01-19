@@ -2,6 +2,7 @@ package com.lch.fulicenter.model.net;
 
 import android.content.Context;
 
+import com.lch.fulicenter.model.bean.CartBean;
 import com.lch.fulicenter.model.bean.CollectBean;
 import com.lch.fulicenter.model.bean.MessageBean;
 import com.lch.fulicenter.model.bean.User;
@@ -25,5 +26,10 @@ public interface IModelUser {
     void collecCount(Context context, String userName, OnCompleteListener<MessageBean> listener);
 
     void downloadCollects(Context context, String userName, int pageId, OnCompleteListener<CollectBean[]> listener);
+
+    void getCart(Context context, String userName, OnCompleteListener<CartBean[]> listener);
+
+    void updateCart(Context context, int action, String userName, int goodIs, int count, int cartId, OnCompleteListener<MessageBean> listener);
+
 
 }

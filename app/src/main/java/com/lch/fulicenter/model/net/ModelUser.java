@@ -2,7 +2,10 @@ package com.lch.fulicenter.model.net;
 
 import android.content.Context;
 
+import com.lch.fulicenter.application.FuLiCenterApplication;
 import com.lch.fulicenter.application.I;
+import com.lch.fulicenter.model.bean.CartBean;
+import com.lch.fulicenter.model.bean.CategoryChildBean;
 import com.lch.fulicenter.model.bean.CollectBean;
 import com.lch.fulicenter.model.bean.MessageBean;
 import com.lch.fulicenter.model.utils.MD5;
@@ -73,9 +76,64 @@ public class ModelUser implements IModelUser {
         OkHttpUtils<CollectBean[]> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_COLLECTS)
                 .addParam(I.Collect.USER_NAME, userName)
-                .addParam(I.PAGE_ID,String.valueOf(pageId))
-                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .addParam(I.PAGE_ID, String.valueOf(pageId))
+                .addParam(I.PAGE_SIZE, String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(CollectBean[].class)
                 .execute(listener);
+    }
+
+    @Override
+    public void getCart(Context context, String userName, OnCompleteListener<CartBean[]> listener) {
+        OkHttpUtils<CartBean[]> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_CARTS)
+                .addParam(I.Cart.USER_NAME, userName)
+                .targetClass(CartBean[].class)
+                .execute(listener);
+
+    }
+
+    private void addCart(Context context, String userName, int goodsId, int count, OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_CART)
+                .addParam(I.Cart.USER_NAME, userName)
+                .addParam(I.Cart.GOODS_ID, String.valueOf(goodsId))
+                .addParam(I.Cart.COUNT, String.valueOf(count))
+                .addParam(I.Cart.IS_CHECKED, String.valueOf(false))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+
+    }
+
+    private void delCart(Context context, int cartId, OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_CART)
+                .addParam(I.Cart.ID, String.valueOf(cartId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+
+    }
+
+    private void updateCart(Context context, int cartId, int count, OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_CART)
+                .addParam(I.Cart.ID, String.valueOf(cartId))
+                .addParam(I.Cart.COUNT, String.valueOf(count))
+                .addParam(I.Cart.IS_CHECKED, String.valueOf(false))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+
+    }
+
+    @Override
+    public void updateCart(Context context, int action, String userName, int goodIs, int count, int cartId, OnCompleteListener<MessageBean> listener) {
+        if (FuLiCenterApplication.getMyCartList().containsKey(goodIs)) {
+            if (action == I.ACTION_CART_DEL) {
+                delCart(context, cartId, listener);
+            } else {
+                updateCart(context, cartId, count, listener);
+            }
+        } else {
+            addCart(context, userName, goodIs, 1, listener);
+        }
     }
 }
