@@ -1,5 +1,9 @@
 package com.lch.fulicenter.controller.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +39,7 @@ public class CollectActivity extends AppCompatActivity {
     IModelUser model;
     int pageId = 1;
     User user = null;
+    UpdateCollectReceiver mReceiver;
 
     @BindView(R.id.tvRefresh)
     TextView mTvRefresh;
@@ -49,14 +54,21 @@ public class CollectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_collect);
         ButterKnife.bind(this);
         user = FuLiCenterApplication.getUser();
+        mReceiver = new UpdateCollectReceiver();
         if (user == null) {
             finish();
-        }else {
+        } else {
             initView();
             model = new ModelUser();
             initData();
             setListener();
+            setReceiverListener();
         }
+    }
+
+    private void setReceiverListener() {
+        IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_COLLECT);
+        registerReceiver(mReceiver, filter);
     }
 
     private void setListener() {
@@ -167,5 +179,21 @@ public class CollectActivity extends AppCompatActivity {
     @OnClick(R.id.ivBack)
     public void onClick() {
         MFGT.finish(this);
+    }
+
+    class UpdateCollectReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int goodsId = intent.getIntExtra(I.Collect.GOODS_ID, 0);
+            mAdapter.removeItem(goodsId);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
+        }
     }
 }

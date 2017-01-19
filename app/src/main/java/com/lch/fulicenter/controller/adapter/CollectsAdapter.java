@@ -64,6 +64,13 @@ public class CollectsAdapter extends RecyclerView.Adapter {
         mList.addAll(list);
     }
 
+    public void removeItem(int goodsId) {
+        if (goodsId != 0) {
+            mList.remove(new CollectBean(goodsId));
+            notifyDataSetChanged();
+        }
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == I.TYPE_ITEM) {
@@ -153,7 +160,7 @@ public class CollectsAdapter extends RecyclerView.Adapter {
             model = new ModelGoods();
             final CollectBean goods = (CollectBean) tvItemCollect.getTag();
             String username = FuLiCenterApplication.getUser().getMuserName();
-            model.setCollect(mContext,goods.getGoodsId(), username,I.ACTION_DELETE_COLLECT,new OnCompleteListener<MessageBean>() {
+            model.setCollect(mContext, goods.getGoodsId(), username, I.ACTION_DELETE_COLLECT, new OnCompleteListener<MessageBean>() {
                 @Override
                 public void onSuccess(MessageBean result) {
                     if (result != null && result.isSuccess()) {
