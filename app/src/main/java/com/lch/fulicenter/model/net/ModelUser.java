@@ -3,6 +3,7 @@ package com.lch.fulicenter.model.net;
 import android.content.Context;
 
 import com.lch.fulicenter.application.I;
+import com.lch.fulicenter.model.bean.CollectBean;
 import com.lch.fulicenter.model.bean.MessageBean;
 import com.lch.fulicenter.model.utils.MD5;
 import com.lch.fulicenter.model.utils.OkHttpUtils;
@@ -64,6 +65,17 @@ public class ModelUser implements IModelUser {
         utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
                 .addParam(I.Collect.USER_NAME, userName)
                 .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    @Override
+    public void downloadCollects(Context context, String userName, int pageId, OnCompleteListener<CollectBean[]> listener) {
+        OkHttpUtils<CollectBean[]> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECTS)
+                .addParam(I.Collect.USER_NAME, userName)
+                .addParam(I.PAGE_ID,String.valueOf(pageId))
+                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .targetClass(CollectBean[].class)
                 .execute(listener);
     }
 }
