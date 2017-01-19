@@ -12,6 +12,7 @@ import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.FuLiCenterApplication;
 import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.controller.fragment.BoutiqueFragment;
+import com.lch.fulicenter.controller.fragment.CartFragment;
 import com.lch.fulicenter.controller.fragment.CategoryFragment;
 import com.lch.fulicenter.controller.fragment.NewGoodsFragment;
 import com.lch.fulicenter.controller.fragment.PersonalCenterFragment;
@@ -37,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
     NewGoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
+    CartFragment mCartFragment;
     PersonalCenterFragment mPersonalCenterFragment;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +54,13 @@ public class MainActivity extends AppCompatActivity {
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutiqueFragment = new BoutiqueFragment();
         mCategoryFragment = new CategoryFragment();
+        mCartFragment = new CartFragment();
         mPersonalCenterFragment = new PersonalCenterFragment();
 
         mFragments[0] = mNewGoodsFragment;
         mFragments[1] = mBoutiqueFragment;
         mFragments[2] = mCategoryFragment;
+        mFragments[3] = mCartFragment;
         mFragments[4] = mPersonalCenterFragment;
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
@@ -80,12 +85,15 @@ public class MainActivity extends AppCompatActivity {
                 index = 2;
                 break;
             case R.id.layout_cart:
-                index = 3;
+                if (FuLiCenterApplication.getUser() == null) {
+                    MFGT.gotoLogin(this);
+                } else {
+                    index = 3;
+                }
                 break;
             case R.id.layout_personal_center:
                 if (FuLiCenterApplication.getUser() == null) {
                     MFGT.gotoLogin(this);
-                    rbs[4].setChecked(false);
                 } else {
                     index = 4;
                 }
@@ -130,8 +138,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == I.REQUEST_CODE_LOGIN) {
-            index = 4;
+        if (resultCode == RESULT_OK) {
+            if (requestCode == I.REQUEST_CODE_LOGIN) {
+                index = 4;
+            }
+            if (requestCode == I.REQUEST_CODE_LOGIN_FROM_CART) {
+                index = 3;
+            }
             setFragment();
             setRadioStatus();
         }
