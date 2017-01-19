@@ -109,7 +109,6 @@ public class CartFragment extends Fragment {
                         mtvNothing.setVisibility(View.VISIBLE);
                     }
                 }
-
                 @Override
                 public void onError(String error) {
 

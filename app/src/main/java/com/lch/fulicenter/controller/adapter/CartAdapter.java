@@ -10,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lch.fulicenter.R;
+import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.model.bean.BoutiqueBean;
 import com.lch.fulicenter.model.bean.CartBean;
 import com.lch.fulicenter.model.bean.CartBean;
+import com.lch.fulicenter.model.bean.GoodsDetailsBean;
 import com.lch.fulicenter.model.bean.NewGoodsBean;
 import com.lch.fulicenter.model.utils.ImageLoader;
 import com.lch.fulicenter.view.MFGT.MFGT;
@@ -59,11 +61,16 @@ public class CartAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder ParentHolder, final int position) {
         CartAdapter.CartViewHolder vh = (CartAdapter.CartViewHolder) ParentHolder;
-//        ImageLoader.downloadImg(mContext, vh.mivGoodsThumb, mList.get(position).getGoods().getGoodsImg());
-//        vh.mtvGoodsName.setText(mList.get(position).getUserName());
-//        vh.mtvCartCount.setText(mList.get(position).getCount());
-//        vh.mtvGoodsPrice.setText(mList.get(position).getGoods().getCurrencyPrice());
+        CartBean cartBean = mList.get(position);
+        GoodsDetailsBean goods = cartBean.getGoods();
+        if (goods != null) {
+            ImageLoader.downloadImg(mContext, vh.mivGoodsThumb, goods.getGoodsThumb());
+            vh.mtvGoodsName.setText(goods.getGoodsName());
+            vh.mtvGoodsPrice.setText(goods.getCurrencyPrice());
+        }
+        vh.mtvCartCount.setText("(" + cartBean.getCount() + ")");
     }
+
 
     @Override
     public int getItemCount() {

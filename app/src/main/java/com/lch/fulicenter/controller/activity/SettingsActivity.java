@@ -1,6 +1,7 @@
 package com.lch.fulicenter.controller.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.lch.fulicenter.model.net.ModelUser;
 import com.lch.fulicenter.model.net.OnCompleteListener;
 import com.lch.fulicenter.model.utils.CommonUtils;
 import com.lch.fulicenter.model.utils.ImageLoader;
+import com.lch.fulicenter.model.utils.L;
 import com.lch.fulicenter.model.utils.OnSetAvatarListener;
 import com.lch.fulicenter.model.utils.ResultUtils;
 import com.lch.fulicenter.model.utils.SharePrefrenceUtils;
@@ -107,22 +109,25 @@ public class SettingsActivity extends AppCompatActivity {
         }
         if (requestCode == I.REQUEST_CODE_NICK) {
             mtvUserNick.setText(FuLiCenterApplication.getUser().getMuserNick());
-        } else if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
-            uploadAvatar();
         } else {
             mOnSetAvatarListener.setAvatar(requestCode, data, mivUserAvatar);
+        }
+        if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
+            uploadAvatar();
         }
     }
 
     private void uploadAvatar() {
         IModelUser mModel = new ModelUser();
-        User user = FuLiCenterApplication.getUser();
+        final User user = FuLiCenterApplication.getUser();
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage(getString(R.string.update_user_avatar));
         dialog.show();
         File file = null;
         file = new File(String.valueOf(OnSetAvatarListener.getAvatarFile(this,
                 I.AVATAR_TYPE_USER_PATH + "/" + user.getMuserName() + user.getMavatarSuffix())));
+        L.e("file：" + file.exists());
+        L.e("file：" + file.getAbsolutePath());
         mModel.uploadAvatar(this, user.getMuserName(), file, new OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
