@@ -12,7 +12,11 @@ import com.lch.fulicenter.R;
 import com.lch.fulicenter.application.FuLiCenterApplication;
 import com.lch.fulicenter.application.I;
 import com.lch.fulicenter.model.bean.CollectBean;
-import com.lch.fulicenter.model.bean.User;
+import com.lch.fulicenter.model.bean.MessageBean;
+import com.lch.fulicenter.model.net.IModeGoods;
+import com.lch.fulicenter.model.net.ModelGoods;
+import com.lch.fulicenter.model.net.OnCompleteListener;
+import com.lch.fulicenter.model.utils.CommonUtils;
 import com.lch.fulicenter.model.utils.ImageLoader;
 import com.lch.fulicenter.view.MFGT.FooterViewHolder;
 import com.lch.fulicenter.view.MFGT.MFGT;
@@ -32,6 +36,7 @@ public class CollectsAdapter extends RecyclerView.Adapter {
     ArrayList<CollectBean> mList;
     String footer;
     boolean isMore;
+    IModeGoods model;
 
 
     public String getFooter() {
@@ -82,13 +87,16 @@ public class CollectsAdapter extends RecyclerView.Adapter {
         ImageLoader.downloadImg(mContext, vh.mIvGoodsThumb, mList.get(position).getGoodsThumb());
 
         CollectBean goods = mList.get(position);
-        vh.mTvGoodsName.setText(mList.get(position).getGoodsName());
+
+        vh.mTvGoodsName.setText(goods.getGoodsName());
+        vh.tvItemCollect.setTag(goods);
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MFGT.gotoGoodsDetail(mContext, mList.get(position).getGoodsId());
             }
         });
+
     }
 
     @Override
@@ -132,5 +140,37 @@ public class CollectsAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
         }
+
+        @OnClick(R.id.item_collect)
+        public void onGoodsItemClick() {
+            CollectBean goods = (CollectBean) tvItemCollect.getTag();
+            MFGT.gotoGoodsDetail(mContext, goods.getGoodsId());
+
+        }
+
+        @OnClick(R.id.ivDelete)
+        public void deleteCollects() {
+            model = new ModelGoods();
+            final CollectBean goods = (CollectBean) tvItemCollect.getTag();
+            String username = FuLiCenterApplication.getUser().getMuserName();
+            model.setCollect(mContext,goods.getGoodsId(), username,I.ACTION_DELETE_COLLECT,new OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result != null && result.isSuccess()) {
+                        mList.remove(goods);
+                        notifyDataSetChanged();
+                    } else {
+                        CommonUtils.showLongToast(result != null ? result.getMsg() :
+                                mContext.getResources().getString(R.string.delete_collect_fail));
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+
     }
 }
