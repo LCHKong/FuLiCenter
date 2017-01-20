@@ -69,6 +69,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             vh.mtvGoodsPrice.setText(goods.getCurrencyPrice());
         }
         vh.mtvCartCount.setText("(" + cartBean.getCount() + ")");
+        vh.mchkSelect.setChecked(false);
     }
 
 
@@ -82,8 +83,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         if (mList != null) {
             mList.clear();
         }
-        mList.addAll(list);
-        notifyDataSetChanged();
+        addData(list);
     }
 
     public void addData(ArrayList<CartBean> list) {
