@@ -7,6 +7,8 @@ import com.lch.fulicenter.model.bean.User;
 
 import java.util.HashMap;
 
+import cn.sharesdk.framework.ShareSDK;
+
 /**
  * Created by LCH on 2017/1/10.
  */
@@ -22,6 +24,7 @@ public class FuLiCenterApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        ShareSDK.initSDK(this);
     }
 
     // 内存保存
