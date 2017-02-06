@@ -1,28 +1,33 @@
 package com.lch.fulicenter.controller.adapter;
 
 import android.content.Context;
-import android.provider.ContactsContract;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lch.fulicenter.R;
+import com.lch.fulicenter.application.FuLiCenterApplication;
 import com.lch.fulicenter.application.I;
-import com.lch.fulicenter.model.bean.BoutiqueBean;
-import com.lch.fulicenter.model.bean.CartBean;
 import com.lch.fulicenter.model.bean.CartBean;
 import com.lch.fulicenter.model.bean.GoodsDetailsBean;
-import com.lch.fulicenter.model.bean.NewGoodsBean;
+import com.lch.fulicenter.model.bean.MessageBean;
+import com.lch.fulicenter.model.bean.User;
+import com.lch.fulicenter.model.net.IModelUser;
+import com.lch.fulicenter.model.net.ModelUser;
+import com.lch.fulicenter.model.net.OnCompleteListener;
 import com.lch.fulicenter.model.utils.ImageLoader;
-import com.lch.fulicenter.view.MFGT.MFGT;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by LCH on 2017/1/11.
@@ -31,8 +36,10 @@ import butterknife.ButterKnife;
 public class CartAdapter extends RecyclerView.Adapter {
     Context mContext;
     ArrayList<CartBean> mList;
-    ArrayList<NewGoodsBean> mN;
     String footer;
+    int listPosition;
+    IModelUser model;
+    User user;
 
 
     public String getFooter() {
@@ -47,20 +54,23 @@ public class CartAdapter extends RecyclerView.Adapter {
 
     public CartAdapter(Context context, ArrayList<CartBean> list) {
         mContext = context;
-        mList = new ArrayList<>();
-        mList.addAll(list);
+        this.mList = list;
+        model = new ModelUser();
+        user = FuLiCenterApplication.getUser();
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder =
-                new CartAdapter.CartViewHolder(View.inflate(mContext, R.layout.item_cart, null));
+                new CartViewHolder(View.inflate(mContext, R.layout.item_cart, null));
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder ParentHolder, final int position) {
-        CartAdapter.CartViewHolder vh = (CartAdapter.CartViewHolder) ParentHolder;
+        listPosition = position;
+        CartViewHolder vh = (CartViewHolder) ParentHolder;
         CartBean cartBean = mList.get(position);
         GoodsDetailsBean goods = cartBean.getGoods();
         if (goods != null) {
@@ -69,13 +79,21 @@ public class CartAdapter extends RecyclerView.Adapter {
             vh.mtvGoodsPrice.setText(goods.getCurrencyPrice());
         }
         vh.mtvCartCount.setText("(" + cartBean.getCount() + ")");
-        vh.mchkSelect.setChecked(false);
+        vh.mchkSelect.setChecked(mList.get(listPosition).isChecked());
+        vh.mchkSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mList.get(listPosition).setChecked(isChecked);
+                Log.e("adapter","checkListener sendBroadcast");
+                mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+            }
+        });
     }
 
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return mList != null ? mList.size() : 0;
     }
 
 
@@ -91,6 +109,59 @@ public class CartAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    @OnClick({R.id.ivAddCart, R.id.ivDeleCart})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ivAddCart:
+                model.updateCart(mContext, I.ACTION_CART_ADD, user.getMuserName(),
+                        mList.get(listPosition).getGoodsId(), 1, mList.get(listPosition).getId(), new OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                if (result != null && result.isSuccess()) {
+                                    mList.get(listPosition).setCount(mList.get(listPosition).getCount() + 1);
+                                    mContext.sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+                break;
+            case R.id.ivDeleCart:
+                final int count = mList.get(listPosition).getCount();
+                int action = I.ACTION_CART_UPDATE;
+                if (count > 1) {
+                    // update
+                    action = I.ACTION_CART_UPDATE;
+                }else {
+                    // del
+                    action = I.ACTION_CART_DEL;
+                }
+                model.updateCart(mContext, action, user.getMuserName(), mList.get(listPosition).getGoodsId(), count - 1, mList.get(listPosition).getId()
+                        , new OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                if (result != null && result.isSuccess()) {
+                                    if (count <= 1) {
+                                        mList.remove(listPosition);
+                                    }else {
+                                        mList.get(listPosition).setCount(count - 1);
+                                    }
+                                    mContext.sendBroadcast(new Intent(I.REQUEST_UPDATE_CART));
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+                break;
+        }
+    }
+
     static class CartViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.chkSelect)
         CheckBox mchkSelect;
@@ -102,7 +173,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         ImageView mivAddCart;
         @BindView(R.id.tvCartCount)
         TextView mtvCartCount;
-        @BindView(R.id.ivReduceCart)
+        @BindView(R.id.ivDeleCart)
         ImageView mivReduceCart;
         @BindView(R.id.tvGoodsPrice)
         TextView mtvGoodsPrice;
@@ -112,4 +183,13 @@ public class CartAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
     }
+
+
+    /*@OnCheckedChanged(R.id.chkSelect)
+    public void checkListener(boolean checked) {
+        mList.get(listPosition).setChecked(checked);
+        Log.e("adapter","checkListener sendBroadcast");
+        mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+    }*/
+
 }

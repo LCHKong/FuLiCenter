@@ -58,17 +58,6 @@
         android:textColor="#f09"
         android:textSize="18sp" />
 
-    <ImageView
-        android:id="@+id/ivReduceCart"
-        android:layout_below="@id/tvGoodsName"
-        android:layout_toRightOf="@id/tvCartCount"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:src="@mipmap/del_cart" />
-
     <TextView
         android:id="@+id/tvGoodsPrice"
         android:layout_width="wrap_content"
@@ -79,5 +68,14 @@
         android:text="￥3000"
         android:textColor="#f90"
         android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/ivDeleCart"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="10dp"
+        android:src="@mipmap/del_cart"
+        android:layout_alignTop="@+id/tvCartCount"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
