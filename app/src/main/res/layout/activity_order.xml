@@ -44,13 +44,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="收货人:"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/etReceiverName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="yw"
             android:textColor="#000" />
     </LinearLayout>
 
@@ -67,14 +67,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="手机号码:"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:text="13377889966"
+            android:text="88888888"
             android:textColor="#000" />
     </LinearLayout>
 
@@ -92,7 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="所在地区:"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/spinArea"
@@ -116,13 +118,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="街道地址:"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/etAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="海淀区"
             android:textColor="#000" />
     </LinearLayout>
 
