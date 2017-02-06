@@ -26,6 +26,7 @@ import com.lch.fulicenter.model.bean.User;
 import com.lch.fulicenter.model.net.IModelUser;
 import com.lch.fulicenter.model.net.ModelUser;
 import com.lch.fulicenter.model.net.OnCompleteListener;
+import com.lch.fulicenter.model.utils.CommonUtils;
 import com.lch.fulicenter.model.utils.ConvertUtils;
 import com.lch.fulicenter.model.utils.SpaceItemDecoration;
 import com.lch.fulicenter.view.MFGT.MFGT;
@@ -59,6 +60,8 @@ public class CartFragment extends Fragment {
     IModelUser model;
     UpdateCartReceiver mReceiver;
     User user;
+    int sumPrice = 0;
+    int payPrice = 0;
 
     public CartFragment() {
         // Required empty public constructor
@@ -82,7 +85,7 @@ public class CartFragment extends Fragment {
         mReceiver = new UpdateCartReceiver();
         IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_CART);
         getContext().registerReceiver(mReceiver, filter);
-        Log.e("CartFragment","registerReceiver success");
+        Log.e("CartFragment", "registerReceiver success");
     }
 
     private void setListener() {
@@ -170,8 +173,9 @@ public class CartFragment extends Fragment {
     }
 
     private void setPrice() {
-        Log.e("CartFragment","setPrice");
-        int sumPrice = 0;
+        Log.e("CartFragment", "setPrice");
+        sumPrice = 0;
+        payPrice = 0;
         int savePrice = 0;
         if (mList != null && mList.size() > 0) {
             for (CartBean cart : mList) {
@@ -185,12 +189,23 @@ public class CartFragment extends Fragment {
         mtvCartSumPrice.setText("合计：￥" + sumPrice);
         mtvCartSavePrice.setText("节省:￥" + savePrice);
         mAdapter.notifyDataSetChanged();
+        payPrice = sumPrice - savePrice;
     }
 
     private int getPrice(String price) {
         int p = 0;
         p = Integer.valueOf(price.substring(price.indexOf("￥") + 1));
         return p;
+    }
+
+    @OnClick(R.id.tv_cart_buy)
+    public void onBuyClick() {
+        if (sumPrice > 0) {
+            Log.e("mian", "sumPrice=" + sumPrice);
+            MFGT.gotoOrder(getActivity(),payPrice);
+        } else {
+            CommonUtils.showShortToast(R.string.order_nothing);
+        }
     }
 
     class UpdateCartReceiver extends BroadcastReceiver {

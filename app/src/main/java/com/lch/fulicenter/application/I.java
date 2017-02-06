@@ -79,7 +79,7 @@ public interface I {
     int CAT_ID = 0;
     String BROADCAST_UPDATA_CART = "cn.ucai.fulicenter.update.cart";
     int CART_CHECKED_DEFAULT = 0;
-    String  BROADCAST_UPDATA_COLLECT = "cn.ucai.fulicenter.update.collect";
+    String BROADCAST_UPDATA_COLLECT = "cn.ucai.fulicenter.update.collect";
     int ACTION_CART_ADD = 1;
     int ACTION_CART_DEL = 2;
     int ACTION_CART_UPDATE = 3;
@@ -278,6 +278,7 @@ public interface I {
          * 商品是否已被选中
          */
         String IS_CHECKED = "isChecked";
+        String PAY_PRICE = "payPrice";
     }
 
     interface Collect {

@@ -12,6 +12,7 @@ import com.lch.fulicenter.controller.activity.CategoryChildActivity;
 import com.lch.fulicenter.controller.activity.CollectActivity;
 import com.lch.fulicenter.controller.activity.GoodsDetailActivity;
 import com.lch.fulicenter.controller.activity.LoginActivity;
+import com.lch.fulicenter.controller.activity.OrderActivity;
 import com.lch.fulicenter.controller.activity.RegisterActivity;
 import com.lch.fulicenter.controller.activity.SettingsActivity;
 import com.lch.fulicenter.controller.activity.UpdateNickActivity;
@@ -83,5 +84,11 @@ public class MFGT {
 
     public static void gotoCollect(Activity activity) {
         startActivity(activity, CollectActivity.class);
+    }
+
+    public static void gotoOrder(Activity activity, int payPrice) {
+        Intent intent = new Intent(activity, OrderActivity.class);
+        intent.putExtra(I.Cart.PAY_PRICE, payPrice);
+        startActivity(activity, intent);
     }
 }
